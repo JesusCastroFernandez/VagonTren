@@ -1,0 +1,104 @@
+public class VagonTren {
+    private ControlServicio[] servicios;
+    private String companyiaTrenes;
+    private String descripcion;
+    private int numPuertasVagon;
+    private int numConjuntoAltavoces;
+    private int numVentanillaVagon;
+    private int numTirasLuz;
+    
+    public VagonTren(String companyia, String descripcion, ControlServicio... servicios) {
+        this.companyiaTrenes = companyia;
+        this.descripcion = descripcion;
+        this.servicios = servicios;
+        contarDispositivos();
+    }
+    
+    public VagonTren(String companyia, String descripcion, int numControles) {
+        this.companyiaTrenes = companyia;
+        this.descripcion = descripcion;
+        this.servicios = new ControlServicio[numControles];
+    }
+    
+    public String getCompanyiaTrenes() {
+        return companyiaTrenes;
+    }
+    
+    public String getDescripcion() {
+        return descripcion;
+    }
+    
+    public int getNumServicios() {
+        return servicios.length;
+    }
+    
+    public int getNumTirasLuz() {
+        int count = 0;
+        for (ControlServicio servicio : servicios) {
+            if (servicio instanceof TiraLuz) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    public int getNumPuertasVagon() {
+        int count = 0;
+        for (ControlServicio servicio : servicios) {
+            if (servicio instanceof PuertaVagon) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    public int getNumConjuntoAltavoces() {
+        int count = 0;
+        for (ControlServicio servicio : servicios) {
+            if (servicio instanceof ConjuntoAltavoces) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    public int getNumVentanillaVagon() {
+        int count = 0;
+        for (ControlServicio servicio : servicios) {
+            if (servicio instanceof VentanillaVagon) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    public void cerrarPuertas() {
+        for (ControlServicio servicio : servicios) {
+            if (servicio instanceof PuertaVagon) {
+                ((PuertaVagon) servicio).cerrar();
+            }
+        }
+    }
+    
+    public void activarDispositivosActivables() {
+        for (ControlServicio servicio : servicios) {
+            if (servicio instanceof Activable && ((Activable) servicio).esActivable()) {
+                ((Activable) servicio).activar();
+            }
+        }
+    }
+    
+    private void contarDispositivos() {
+        for (ControlServicio servicio : servicios) {
+            if (servicio instanceof PuertaVagon) {
+                numPuertasVagon++;
+            } else if (servicio instanceof ConjuntoAltavoces) {
+                numConjuntoAltavoces++;
+            } else if (servicio instanceof VentanillaVagon) {
+                numVentanillaVagon++;
+            } else if (servicio instanceof TiraLuz) {
+                numTirasLuz++;
+            }
+        }
+    }
+}
